@@ -22,7 +22,7 @@ public class DeploymentController {
                 "version", appVersion,
                 "pod", hostname,
                 "time", Instant.now().toString(),
-                "message", "Aplikacja działa poprawnie 6"
+                "message", "Aplikacja działa poprawnie 7"
         );
     }
 
