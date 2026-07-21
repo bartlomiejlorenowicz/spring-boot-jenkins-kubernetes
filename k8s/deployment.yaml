@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deploy-lab
+  namespace: deploy-lab
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: deploy-lab
+  template:
+    metadata:
+      labels:
+        app: deploy-lab
+    spec:
+      containers:
+        - name: deploy-lab
+          image: deploy-lab:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080
+          env:
+            - name: APP_VERSION
+              value: "latest"
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8080
+            initialDelaySeconds: 20
+            periodSeconds: 10
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "384Mi"
+              cpu: "500m"
